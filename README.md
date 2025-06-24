@@ -1,7 +1,3 @@
-Here’s a professional and beginner-friendly `README.md` for your **bill-calculator** React application:
-
----
-
 # 🧾 Bill Calculator
 
 This is a simple React app called **Bill Calculator** that helps you and a friend decide how much to tip after dining out, based on how each of you rated the service.
@@ -142,6 +138,3 @@ src/
 
 MIT License
 
----
-
-Let me know if you’d like a version of the README with emojis removed or tailored for a GitHub audience with badges, etc.
