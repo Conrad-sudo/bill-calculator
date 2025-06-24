@@ -1,36 +1,54 @@
 import { useState } from "react";
 
+const tipDict = {
+  "Dissatisfied (0%)": 0,
+  "It was okay (5%)": 0.05,
+  "It was good (10%)": 0.1,
+  "Absolutely amazing (20%)": 0.2,
+};
+
+const tipList = [
+  "Dissatisfied (0%)",
+  "It was okay (5%)",
+  "It was good (10%)",
+  "Absolutely amazing (20%)",
+];
+
 function App() {
   const [billAmount, setBillAmount] = useState(0);
+  const [myDescription, setMyDescription] = useState(tipList[0]);
+  const [friendDescription, setFriendDescription] = useState(tipList[0]);
   const [myTip, setMyTip] = useState(0);
   const [friendTip, setfriendTip] = useState(0);
 
   function handleMyTip(e) {
-    setMyTip(Number(e.target.value));
+    setMyDescription(e.target.value);
+    setMyTip(tipDict[e.target.value]);
   }
 
   function handleFriendTip(e) {
-    setfriendTip(Number(e.target.value));
+    setFriendDescription(e.target.value);
+    setfriendTip(tipDict[e.target.value]);
   }
 
   function handleAmount(e) {
     e.preventDefault();
-    setBillAmount(Number(e.target.value));
+    setBillAmount(e.target.value);
   }
 
   function handleReset() {
     setBillAmount(0);
-    setMyTip(0);
-    setfriendTip(0);
+    setMyDescription(tipList[0]);
+    setFriendDescription(tipList[0]);
   }
   return (
     <div>
       <Bill billAmount={billAmount} onEnterAmount={handleAmount} />
-      <Tip tip={myTip} onChoose={handleMyTip}>
+      <Tip tipDescription={myDescription} onChoose={handleMyTip}>
         {" "}
         What did you think of the service ?{" "}
       </Tip>
-      <Tip tip={friendTip} onChoose={handleFriendTip}>
+      <Tip tipDescription={friendDescription} onChoose={handleFriendTip}>
         {" "}
         What did your friend think of the service ?{" "}
       </Tip>
@@ -38,7 +56,7 @@ function App() {
       <Panel
         myTip={myTip}
         friendTip={friendTip}
-        billAmount={billAmount}
+        billAmount={Number(billAmount)}
         onReset={handleReset}
       />
     </div>
@@ -55,17 +73,15 @@ function Bill({ billAmount, onEnterAmount }) {
   );
 }
 
-//Important to remeber how the <select element works>
-function Tip({ tip, children, onChoose }) {
+function Tip({ children, onChoose, tipDescription }) {
   return (
     <div>
       <span> {children}</span>
 
-      <select value={tip} onChange={onChoose}>
-        <option value={0}> Dissatisfied (0%)</option>
-        <option value={0.05}> It was okay (5%)</option>
-        <option value={0.1}> It was good (10%)</option>
-        <option value={0.2}> Absolutely amazing(20%)</option>
+      <select value={tipDescription} onChange={onChoose}>
+        {tipList.map((t) => (
+          <option>{t}</option>
+        ))}
       </select>
     </div>
   );
@@ -84,6 +100,7 @@ function Panel({ myTip, friendTip, billAmount, onReset }) {
         {" "}
         You pay ${totalAmount} ( ${billAmount} + ${totalTip.toFixed(2)} tip){" "}
       </h2>
+
       <button onClick={onReset}>Reset</button>
     </div>
   );
